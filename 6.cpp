@@ -3,60 +3,49 @@
 #include <cstring>
 std::ifstream plik;
 
-void szyfrowanie(int klucz, char tablica[]){
-
-  if(klucz > 26){
-    klucz = klucz%26;
-  }
-
-  std::string pomocnicza;
-  for(int i=0;i<100;i++){
-    pomocnicza = tablica[i];
-    int rozmiar = sizeof(pomocnicza);
-    for(int j=0;j<=rozmiar;j++){
-      if(pomocnicza[j]>'A'){
-        pomocnicza[j]=pomocnicza[j]+klucz;
-      }
-      if(pomocnicza[j]<'Z'){
-        pomocnicza[j] = pomocnicza[j]-klucz;
-      }
+std::string szyfrowanie(std::string line, int klucz){
+    std::string zahashowane;
+    int j=-1;
+    if(klucz>26){
+      klucz=klucz%26;
     }
-    tablica[i] = pomocnicza[i];
-  }
+
+    int dlugosc = line.length();
+
+      for(int i=0;dlugosc>=i;i++){
+        if(i>'A'){
+          zahashowane+= line[i]-klucz;
+        }
+         else if(i<'Z'){
+          zahashowane+= line[i]+klucz;
+        }
+        else if(i == 'X'){
+        zahashowane+=(line[i]-26)+klucz;
+        }
+        else if(i =='Y'){
+          zahashowane+=(line[i]-26)+klucz;
+        }
+        else if(i == 'Z'){
+          zahashowane+=(line[i]-26)+klucz;
+        }
+
+      }
+      return zahashowane;
 }
 
+
 int main(){
-    char tablica[100];
-    int klucz;
-    std::cout << "Podaj klucz :" << '\n';
-    std::cin>>klucz;
-    std::string linijka;
-
-
-    plik.open("dane_6_1.txt");
+  int klucz = 107;
+  plik.open("dane_6_1.txt");
     if(plik.good()){
-      std::cout << "Plik otwarto" << '\n';
-
-      std::cout << "Pliki przed konwersją : " << '\n';
-
-      while(!plik.eof()){
-        getline(plik,linijka);
-        std::cout << linijka << '\n';
+      std::string line;
+      while(std::getline(plik,line)){
+        std::string newLine = szyfrowanie(line,klucz);
+        std::cout << line << '\n';
+        std::cout<<newLine<<std::endl;
       }
+
+      std::cout << line << '\n';
+
     }
-    else{
-      std::cout << "Błąd otwarcia pliku." << '\n';
-    }
-
-    plik.close();
-
-    std::cout << "Pliki po konwersji : " << '\n';
-
-    szyfrowanie(klucz,tablica);
-
-    for(int i=0;i<100;i++){
-        std::cout << tablica[i] << '\n';
-    }
-
-      return 0;
 }
