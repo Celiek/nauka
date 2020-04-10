@@ -14,21 +14,16 @@ std::string szyfrowanie(std::string line, int klucz){
 
       for(int i=0;dlugosc>=i;i++){
         if(i>'A'){
+          if(line[i] == 'X'|| line[i]=='Y' || line[i]=='Z'){
+              zahashowane+= line[i]+klucz-26;
+          }
+          else{
           zahashowane+= line[i]-klucz;
+          }
         }
          else if(i<'Z'){
           zahashowane+= line[i]+klucz;
         }
-        else if(i == 'X'){
-        zahashowane+=(line[i]-26)+klucz;
-        }
-        else if(i =='Y'){
-          zahashowane+=(line[i]-26)+klucz;
-        }
-        else if(i == 'Z'){
-          zahashowane+=(line[i]-26)+klucz;
-        }
-
       }
       return zahashowane;
 }
